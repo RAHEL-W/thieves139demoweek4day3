@@ -6,6 +6,7 @@ FROM customer
 JOIN address
 ON customer.address_id = address.address_id
 WHERE district ='Texas'
+
 --1_ A) 5  customers they live in Texas ,jennifer davis, kim cruz,  richard mccrary,  bryan hardison,  Ilan  still
 
 -- 2. Get all payments above $6.99 with the Customer's Full 
@@ -18,6 +19,7 @@ JOIN payment
 ON customer.customer_id = payment.customer_id
 GROUP BY  customer.first_name, customer.last_name, amount
 HAVING amount > 6.99
+
 
 -- 2_A) daisy bates...... amount start  from  10.99
 
@@ -62,6 +64,13 @@ GROUP BY staff_id
 ORDER BY transaction_count DESC
 LIMIT 1;
 
+SELECT st.staff_id, st.first_name, st.last_name, COUNT(p.payment_id) AS transaction_count
+FROM staff st
+JOIN payment p ON st.staff_id = p.staff_id
+GROUP BY st.staff_id
+ORDER BY transaction_count DESC
+LIMIT 1;
+
 --5-A) staff_ id 2 has most transctions
 
 --6. How many movies of each rating are there?
@@ -69,6 +78,7 @@ LIMIT 1;
 SELECT rating, COUNT(*)
 FROM film
 GROUP BY  rating
+
 
 --6-A) PG-13 = 223, G = 178,R=195, NC-17  = 210, PG= 194
 
@@ -91,10 +101,8 @@ WHERE customer_id IN(
 
 
 --8. How many free rentals did our stores give away?
-SELECT *
-FROM rental
-
-SELECT *
-FROM film
-
---i don't know
+SELECT COUNT(*) AS free_rental_count
+FROM rental 
+JOIN payment  ON rental.rental_id = payment.rental_id
+WHERE payment.amount = 0;
+--  24
